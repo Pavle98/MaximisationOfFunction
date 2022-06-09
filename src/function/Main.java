@@ -1,12 +1,11 @@
-package levi13;
+package function;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 
 public class Main {
-	static int generationNumber = 250;    //maximum number of experiment repetitions
-	public static int maxIterations = 500; //maximum number of generations in one repetition
+	static int generationNumber = 100;    //maximum number of experiment repetitions
 	static double mutationRate = 0.25;
 	static double crossRate = 0.5;
 	static int populationNumber = 30;
@@ -28,10 +27,11 @@ public class Main {
 			//prvo vrsimo selekciju, pa ukrstanje pa mutaciju
 			for(int i = 0; i < generationNumber; i++) {
 
-				population = selection(population); //selekcija
+
 
 				population = crossover(population, crossRate); //ukrstanje sa verovatnocom da ce se desiti od 0.5
 				population= mutate(population, mutationRate);//mutacija sa verovatnocom da ce se desiti od 0.25
+				population = selection(population); //selekcija
 
 				if(calculateAllFitneses(population) > 24){
 					//Uslov koji kaze da ako ukupna fitness vrednost predje odredjenu vrednost
@@ -63,9 +63,10 @@ public class Main {
 	public static ArrayList<Chromosome> mutate(ArrayList<Chromosome> population, double mut_rate) {
 		//Pravimo listu koju cemo popunjavati sa mutiranim clanovima prethodne generacije
 		ArrayList<Chromosome> newPopulation = new ArrayList<>();
+
 		int binaryLength = population.get(0).binaryRepresetation.length; //Ovo nam je potrebno zbog random funkcije dole u kodu
 		//Prolazimo kroz svaki hromozom u populaciji i ukoliko je random vrednost koju generisemo veca od sanse za mutaciju (mut_rate),
-		//mutiramo hromozom i stavljamo ga u novu populaciju, ukoliko nije vec, ne mutiramo ga vec ga stavljamo takvog kakav jeste u novu populaciju
+		//mutiramo hromozom i stavljamo ga u novu populaciju, ukoliko nije veca, ne mutiramo ga vec ga stavljamo takvog kakav jeste u novu populaciju
 		for(Chromosome c : population) {
 			//pravimo novi hromozom kome cemo posle proslediti binarni niz originalnog cvora,
 			//mutirati ga tako sto cemo promeniti jedan bit u tom nizu i ponovo izracunati vrednosti za

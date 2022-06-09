@@ -1,4 +1,4 @@
-package levi13;
+package function;
 
 import java.util.Random;
 
