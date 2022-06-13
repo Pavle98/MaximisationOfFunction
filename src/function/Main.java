@@ -5,16 +5,18 @@ import java.util.Random;
 
 
 public class Main {
-	static int generationNumber = 100;    //maximum number of experiment repetitions
-	static double mutationRate = 0.25;
-	static double crossRate = 0.5;
-	static int populationNumber = 30;
+
+	static int generationNumber = 100;    //broj generacija
+	static double mutationRate = 0.25; //verovatnoca mutacije
+	static double crossRate = 0.5; //verovatnoca ukrstanja
+	static int populationNumber = 30; //Broj jedinki u populaciji
+	static int binaryArrayLenght = 20; //broj bitova za svaku jedinku
 	static ArrayList<Chromosome> population = new ArrayList<>();
 	static public  Random r = new Random();
 	public static void main(String[] args) {
 
 		//Inicijalizujemo pocetnu populaciju
-			initialization(populationNumber, 20);
+			initialization(populationNumber, binaryArrayLenght);
 
 
 
@@ -26,8 +28,6 @@ public class Main {
 			//prolazimo odredjeni broj puta kroz ovu petlju (u ovom slucaju 100) (osim ako se ne ispuni dole navedeni uslov), i tako "evoluiramo" nasu populaciju
 			//prvo vrsimo selekciju, pa ukrstanje pa mutaciju
 			for(int i = 0; i < generationNumber; i++) {
-
-
 
 				population = crossover(population, crossRate); //ukrstanje sa verovatnocom da ce se desiti od 0.5
 				population= mutate(population, mutationRate);//mutacija sa verovatnocom da ce se desiti od 0.25
@@ -65,18 +65,18 @@ public class Main {
 		ArrayList<Chromosome> newPopulation = new ArrayList<>();
 
 		int binaryLength = population.get(0).binaryRepresetation.length; //Ovo nam je potrebno zbog random funkcije dole u kodu
-		//Prolazimo kroz svaki hromozom u populaciji i ukoliko je random vrednost koju generisemo veca od sanse za mutaciju (mut_rate),
+		//Prolazimo kroz svaki hromozom u populaciji i ukoliko je random vrednost koju generisemo manja od sanse za mutaciju (mut_rate),
 		//mutiramo hromozom i stavljamo ga u novu populaciju, ukoliko nije veca, ne mutiramo ga vec ga stavljamo takvog kakav jeste u novu populaciju
 		for(Chromosome c : population) {
 			//pravimo novi hromozom kome cemo posle proslediti binarni niz originalnog cvora,
 			//mutirati ga tako sto cemo promeniti jedan bit u tom nizu i ponovo izracunati vrednosti za
 			//X i fitnes funkciju.
 			Chromosome mutedChrom = new Chromosome(c.binaryRepresetation.length);
+			//mutiranom hromozomu prosledjujemo binarni niz originalnog cvora
+			mutedChrom.binaryRepresetation = c.binaryRepresetation;
 			double rand = (Math.random());
 			if (rand < mut_rate) {
 				int randomBit = r.nextInt(binaryLength);
-				//mutiranom hromozomu prosledjujemo binarni niz originalnog cvora
-				mutedChrom.binaryRepresetation = c.binaryRepresetation;
 				//menjamo jedan bit
 				mutedChrom.binaryRepresetation[randomBit] = Math.abs((c.binaryRepresetation[randomBit]-1));
 				//binaryNumber je binarni niz (binaryRepresetation) predstavljen u vidu stringa, to nam je bilo potrebno da izracunamo x, zato i tu menjamo taj bit
@@ -121,10 +121,9 @@ public class Main {
 		return newPopulation;
 	}
 
-//kako resiti neparan broj u populaciji
 	public static ArrayList<Chromosome> crossover(ArrayList<Chromosome> population, double cross_rate) {
 		//one point crossover
-		double rand = (Math.random());
+		double rand = (Math.random()); //generisemo random broj koji cemo uporediti sa verovatnocom ukrstanja (0.5)
 		int binaryLength = population.get(0).binaryRepresetation.length;
 
 		ArrayList<Chromosome> newPopulation = new ArrayList<>();
@@ -137,7 +136,7 @@ public class Main {
 			Chromosome firstChild = new Chromosome(binaryLength);
 			Chromosome secondChild = new Chromosome(binaryLength);
 
-			//Isto kao i za mutaciju, ako random generisani broj bude veci od sanse za ukrstanje
+			//Isto kao i za mutaciju, ako random generisani broj bude manji od sanse za ukrstanje
 			//menjamo binarni kod dece, a ako ne bude, dodeljujemo im isti kao kod roditelja
 			if (rand < cross_rate) {
 				//odredjujemo randomBit koji oznacava poziciju tacke ukrstanja,

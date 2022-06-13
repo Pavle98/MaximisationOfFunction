@@ -3,11 +3,11 @@ package function;
 import java.util.Random;
 
 public class Chromosome {
-	public int [] binaryRepresetation;
-	public double decimalValueOfX;
-	public double fitnessFunctionValue;
+	public int [] binaryRepresetation; // binarna vrednost x
+	public double decimalValueOfX; // decimalna (prava) vrednost x eg ( 9 / 15)
+	public double fitnessFunctionValue; // vrednost fitnes funkcije za zadato x
 	public Random r = new Random();
-	public StringBuilder binaryNumber = new StringBuilder();
+	public StringBuilder binaryNumber = new StringBuilder(); //String reprezentacija binarne vrednosti
 	public Chromosome(int binaryArrayLength) {
 		binaryRepresetation = new int[binaryArrayLength];
 		fillBinaryRepresetation(binaryRepresetation);
